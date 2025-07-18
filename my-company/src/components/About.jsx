@@ -1,6 +1,6 @@
 function About() {
     return (
-        <div>
+        <div style={{ padding: '20px' }}>
             <h2>About us</h2>
             <p>We enjoy building and solving problems</p>
         </div>

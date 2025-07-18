@@ -1,6 +1,6 @@
 function Home() {
     return (
-        <div>
+        <div style={{ padding: '20px' }}>
             <h1>Welcome</h1>
             <p>You just landed</p>
         </div>
