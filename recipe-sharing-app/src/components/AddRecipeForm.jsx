@@ -9,6 +9,7 @@
 
     const handleSubmit = (event) => {
       event.preventDefault();
+      if (!title.trim() || !description.trim()) return;
       addRecipe({ id: Date.now(), title, description });
       setTitle('');
       setDescription('');
