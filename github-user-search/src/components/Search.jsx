@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { searchUsers } from "../services/githubService";
+import { searchUsers, fetchUserData } from "../services/githubService"; // <-- Add fetchUserData import
 
 const Search = () => {
   const [username, setUsername] = useState("");
@@ -22,13 +22,21 @@ const Search = () => {
       page: pageToFetch
     });
 
+    // Fetch detailed data for each user
+    const detailedUsers = await Promise.all(
+      (results.items || []).map(async (user) => {
+        const details = await fetchUserData(user.login);
+        return { ...user, ...details };
+      })
+    );
+
     if (resetPage) {
-      setUsers(results.items || []);
+      setUsers(detailedUsers);
     } else {
-      setUsers(prev => [...prev, ...(results.items || [])]);
+      setUsers(prev => [...prev, ...detailedUsers]);
     }
 
-    setHasMore(results.items?.length >= 30); // GitHub API default per_page is 30
+    setHasMore(results.items?.length >= 30);
     setPage(pageToFetch + 1);
     setLoading(false);
   };
@@ -85,8 +93,19 @@ const Search = () => {
               />
               <div>
                 <h2 className="text-lg font-bold">{user.login}</h2>
-                <p>Profile: <a href={user.html_url} target="_blank" rel="noreferrer" className="text-blue-500 underline">{user.html_url}</a></p>
-                {/* Location and repo count will need an extra API call per user if needed */}
+                <p>Location: {user.location || "N/A"}</p>
+                <p>Repos: {user.public_repos ?? "N/A"}</p>
+                <p>
+                  Profile:{" "}
+                  <a
+                    href={user.html_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    {user.html_url}
+                  </a>
+                </p>
               </div>
             </div>
           ))}
