@@ -1,25 +1,36 @@
-// services/githubService.js
-import axios from "axios";
+// src/services/githubService.js
 
-const BASE_URL = "https://api.github.com/users/";
+const BASE_URL = "https://api.github.com";
 
-// GitHub API key from .env file (optional but helps with rate limits)
-const GITHUB_API_KEY = import.meta.env.VITE_APP_GITHUB_API_KEY;
-
-export const fetchUserData = async (username) => {
+// Advanced GitHub user search
+export const searchUsers = async ({ username, location, minRepos }) => {
   try {
-    const headers = {};
+    let queryParts = [];
 
-    if (GITHUB_API_KEY) {
-      headers["Authorization"] = `token ${GITHUB_API_KEY}`;
+    // username
+    if (username) queryParts.push(`${username} in:login`);
+
+    // location
+    if (location) queryParts.push(`location:${location}`);
+
+    // minimum repositories
+    if (minRepos) queryParts.push(`repos:>=${minRepos}`);
+
+    // Combine query parts
+    const query = queryParts.join(" ");
+
+    // Full endpoint
+    const endpoint = `${BASE_URL}/search/users?q=${encodeURIComponent(query)}`;
+
+    const response = await fetch(endpoint);
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status}`);
     }
 
-    const response = await axios.get(`${BASE_URL}${username}`, {
-      headers,
-    });
-
-    return response.data;
+    const data = await response.json();
+    return data.items; // GitHub Search API returns { items: [...] }
   } catch (error) {
-    throw error;
+    console.error("Error searching users:", error);
+    return [];
   }
 };
