@@ -1,6 +1,6 @@
 // src/services/githubService.js
 
-const BASE_URL = "https://api.github.com";
+const BASE_URL = "https://api.github.com/search/users?q";
 
 // Advanced GitHub user search
 export const searchUsers = async ({ username, location, minRepos }) => {
