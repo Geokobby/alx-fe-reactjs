@@ -50,7 +50,7 @@ const AddRecipeForm = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white shadow-xl rounded-2xl mt-10">
+    <div className="max-w-3xl mx-auto p-8 bg-white shadow-xl rounded-2xl mt-10 md:xl">
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
         ➕ Add a New Recipe
       </h2>
