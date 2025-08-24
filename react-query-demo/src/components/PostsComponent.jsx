@@ -14,17 +14,17 @@ const PostsComponent = () => {
     error,
     isLoading,
     isFetching,
+    isError,     // ✅ added
     refetch,
   } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
-    // ✅ Added for checker
-    refetchOnWindowFocus: true,  // refetch when window regains focus
-    keepPreviousData: true,      // keep old data while fetching new
+    refetchOnWindowFocus: true,
+    keepPreviousData: true,
   });
 
   if (isLoading) return <p>Loading posts...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isError) return <p>Error: {error.message}</p>;  {/* ✅ updated */}
 
   return (
     <div className="max-w-xl mx-auto p-4">
