@@ -1,9 +1,11 @@
 // src/pages/Profile.jsx
-import { Link, Outlet } from "react-router-dom";
+import { Link, Routes, Route } from "react-router-dom";
+import ProfileDetails from "./ProfileDetails";
+import ProfileSettings from "./ProfileSettings";
 
 const Profile = () => {
   return (
-    <div className="p-6">
+    <div>
       <h2 className="text-2xl font-bold mb-4">User Profile</h2>
 
       {/* Sub-navigation */}
@@ -16,8 +18,11 @@ const Profile = () => {
         </Link>
       </nav>
 
-      {/* Nested route content will be rendered here */}
-      <Outlet />
+      {/* Nested routes */}
+      <Routes>
+        <Route path="details" element={<ProfileDetails />} />
+        <Route path="settings" element={<ProfileSettings />} />
+      </Routes>
     </div>
   );
 };
